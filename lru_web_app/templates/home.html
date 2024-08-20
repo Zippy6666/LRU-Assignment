@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>People Finder</title>
 </head>
 <body>
 {% for person in page_obj %}
-    {{ person.name }}<br>
+    <a href="{% url 'person_page' %}">Name: {{person.name}} City: {{person.city}}</a><br>
 {% endfor %}
 <div class="pagination">
     <span class="step-links">
