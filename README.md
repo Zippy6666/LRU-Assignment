@@ -1,2 +1,2 @@
-# lru_assignment
+# LRU Assignment
 A django application featuring my own LRU-cache function.
