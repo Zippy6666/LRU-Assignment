@@ -1,8 +1,11 @@
 from django.core.management.base import BaseCommand
 from lru_web_app.models import Person
 from faker import Faker
+from threading import Thread # TODO
 
-SEED_DATA_COUNT:int = 20_000
+
+SEED_DATA_COUNT: int = 1_000_000
+BATCH_SIZE: int = SEED_DATA_COUNT//100
 
 
 def to_person_number(num: int) -> str:
@@ -23,6 +26,7 @@ class Command(BaseCommand):
         fake = Faker()
         objects = []
         self.stdout.write(self.style.NOTICE("Instanciating objects, please wait..."))
+        bulk_creations = 0
         for _ in range(SEED_DATA_COUNT):
             city = fake.city()
             person_number = to_person_number(
@@ -42,9 +46,12 @@ class Command(BaseCommand):
             )
             objects.append(person)
 
-        self.stdout.write(self.style.NOTICE("Bulk creating objects, please wait..."))
-        if objects:
-            Person.objects.bulk_create(objects, batch_size=10_000)
+            if len(objects) >= BATCH_SIZE:
+                objects.clear()
+                Person.objects.bulk_create(objects)
+                bulk_creations += 1
+                self.stdout.write(self.style.SUCCESS(f"{bulk_creations}/{SEED_DATA_COUNT//BATCH_SIZE} batches done!"))
+
 
         first_person = Person.objects.first()
         name = first_person.name
