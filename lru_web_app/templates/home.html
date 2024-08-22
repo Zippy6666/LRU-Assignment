@@ -7,12 +7,12 @@
 </head>
 <body>
 {% for person in page_obj %}
-    <a href="{% url 'person_page' %}">Name: {{person.name}} City: {{person.city}}</a><br>
+    <a href="{% url 'person_page' person.name person.city %}">Name: {{person.name}} City: {{person.city}}</a><br>
 {% endfor %}
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
+            <!-- <a href="?page=1">&laquo; first</a> -->
             <a href="?page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
@@ -22,7 +22,7 @@
 
         {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <!-- <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> -->
         {% endif %}
     </span>
 </div>

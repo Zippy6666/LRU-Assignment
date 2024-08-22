@@ -23,5 +23,5 @@ from lru_web_app import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name="home"),
-    path("person_page/", views.person_page, name="person_page"),
+    path("person_page/<str:name>/<str:city>/", views.person_page, name="person_page"),
 ]

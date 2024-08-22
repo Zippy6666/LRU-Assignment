@@ -32,8 +32,8 @@ class LRUCache:
                 self._cache_list[0],
             )
 
-            # print(self._cache_list)
-            # print(cached_return_value, "found in cache, returning")
+            print(self._cache_list)
+            print(cached_return_value, "found in cache, returning")
 
             # Is cached, so return cached value
             return cached_return_value
@@ -45,8 +45,8 @@ class LRUCache:
         if len(self._cache_list) > self.max:
             self._cache_list.pop()  # Remove last element if cache is larger than 50
 
-        # print(self._cache_list)
-        # print(return_value, "not found in cache")
+        print(self._cache_list)
+        print(return_value, "not found in cache")
 
         return return_value
 
