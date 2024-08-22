@@ -7,26 +7,45 @@ class LRUCache:
             self.args = args
             self.return_value = return_value
 
-    def __init__(self, func: Callable, max_: int) -> None:
-        self._func: Callable = func
+        def __repr__(self) -> str:
+            return str( self.return_value )
+
+    def __init__(self, max_: int) -> None:
         self._cache_list: list[self._CachedInstance] = []
         self._max: int = max_
 
-    def _is_cached(self, args: tuple) -> tuple[Any, int] | bool:
+    def _is_cached(self, args: tuple) -> tuple[Any, Any]:
         for position, instance in enumerate(self._cache_list):
-            if set(args) == set(instance.args): # Sets eliminate the order of the args
+            if args == instance.args:
                 return instance.return_value, position
-        return False
+        return False, False
 
-    def __call__(self, *args) -> Any:
-        cached_return_value, position = self._is_cached(self, args)
+    def __call__(self, func: Callable, *_) -> Any:
+        def wrapper(*args):
+            cached_return_value, position = self._is_cached(args)
+            if not cached_return_value is False:
+                # Move this value to the first position in the list
+                self._cache_list[0], self._cache_list[position] = (
+                    self._cache_list[position],
+                    self._cache_list[0],
+                )
 
-        return_value = self._func(*args)
+                print(self._cache_list)
 
-        # Insert at first index
-        self._cache_list.insert(0, self._CachedInstance(args, return_value))
+                # Is cached, so return cached value
+                return cached_return_value
 
-        return return_value
+            return_value = func(*args)
+
+            # Insert at first index
+            self._cache_list.insert(0, self._CachedInstance(args, return_value))
+            if len(self._cache_list) > self._max:
+                self._cache_list.pop() # Remove last element if cache it too large
+
+            print(self._cache_list)
+
+            return return_value
+        return wrapper
 
 
 if __name__ == "__main__":
@@ -34,7 +53,7 @@ if __name__ == "__main__":
 
     @LRUCache(3)
     def expensive_operation(a, b):
-        time.sleep(1)
+        time.sleep(2)
         return a * b
 
     expensive_operation(3, 3)
