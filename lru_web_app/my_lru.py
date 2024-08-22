@@ -12,7 +12,7 @@ class LRUCache:
         self._cache_list: list[self._CachedInstance] = []
         self._max: int = max_
 
-    def _is_cached(self, args: tuple) -> tuple[Any, int] | False:
+    def _is_cached(self, args: tuple) -> tuple[Any, int] | bool:
         for position, instance in enumerate(self._cache_list):
             if set(args) == set(instance.args): # Sets eliminate the order of the args
                 return instance.return_value, position

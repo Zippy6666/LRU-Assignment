@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from lru_web_app.models import Person
-from lru import LRUCache
+from .my_lru import LRUCache
 
 
 def find_person(name, city):
