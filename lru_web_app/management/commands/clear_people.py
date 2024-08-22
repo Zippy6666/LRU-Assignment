@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from lru_web_app.models import Person
 
+
 class Command(BaseCommand):
     help = "Removes all people from the database."
 

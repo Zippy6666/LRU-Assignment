@@ -18,7 +18,7 @@ class Command(BaseCommand):
     help = "Seeds people into the database."
 
     def _seed_people(self) -> Person:
-        """ Seeds people into the database. Returns the first generated person """
+        """Seeds people into the database. Returns the first generated person"""
 
         call_command("clear_people")
 
@@ -58,19 +58,19 @@ class Command(BaseCommand):
             Person.objects.bulk_create(objects)
             self.stdout.write(self.style.SUCCESS("Final batch done!"))
 
-        return Person.objects.first()
-
+        return Person.objects
 
     def handle(self, *_, **__):
         self.stdout.write(self.style.NOTICE("Going to seed data, proceed? (y/n)"))
         if input().lower() != "y":
             return
-        
+
         try:
-            first_person = self._seed_people()
+            people = self._seed_people()
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Exception thrown: {type(e)} {e}"))
         else:
+            first_person = people.first()
             first_name = first_person.name
             first_pn = first_person.pn
             first_phone_number = first_person.phone_number
