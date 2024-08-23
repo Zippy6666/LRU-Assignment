@@ -32,7 +32,7 @@ class LRUCache:
                 self._cache_list[0],
             )
 
-            print(self._cache_list)
+            # print(self._cache_list)
             print(cached_return_value, "found in cache, returning")
 
             # Is cached, so return cached value
@@ -43,9 +43,9 @@ class LRUCache:
         # Insert at first index
         self._cache_list.insert(0, self._CachedReturnValue(args, return_value))
         if len(self._cache_list) > self.max:
-            self._cache_list.pop()  # Remove last element if cache is larger than 50
+            self._cache_list.pop()  # Remove last element if cache is larger than max
 
-        print(self._cache_list)
+        # print(self._cache_list)
         print(return_value, "not found in cache")
 
         return return_value

@@ -1,11 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Person Information</title>
+    <link rel="stylesheet" href="{% static 'lru_web_app/css/styles.css' %}">
 </head>
 <body>
-Hello, world!
+    <ul class="person-info-list">
+        <h1>Person {{person.id}}</h1>
+        <li><strong>Name:</strong> <span>{{person.name}}</span></li>
+        <li><strong>PN:</strong> <span>{{person.pn}}</span></li>
+        <li><strong>City:</strong> <span>{{person.city}}</span></li>
+        <li><strong>Job:</strong> <span>{{person.job}}</span></li>
+        <li><strong>Tele:</strong> <span>{{person.phone_number}}</span></li>
+    </ul>
 </body>
 </html>

@@ -20,5 +20,5 @@ def home(request):
 
 
 def person_page(request, name, city):
-    find_person(name, city)
-    return render(request, "person_page.html", {"name":name, "city":city})
+    person = find_person(name, city)
+    return render(request, "person_page.html", {"person":person})
