@@ -6,6 +6,8 @@ class Command(BaseCommand):
     help = "Removes all people from the database."
 
     def handle(self, *_, **__):
-        self.stdout.write(self.style.NOTICE("Removing all people..."))
+        self.stdout.write(
+            self.style.NOTICE(f"Removing {Person.objects.count()} people...")
+        )
         Person.objects.all().delete()
         self.stdout.write(self.style.SUCCESS("People removed!"))

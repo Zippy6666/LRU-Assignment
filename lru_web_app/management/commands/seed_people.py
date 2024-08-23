@@ -5,7 +5,7 @@ from faker import Faker
 
 
 SEED_DATA_COUNT: int = 1_000_000
-BATCH_SIZE: int = SEED_DATA_COUNT // 100
+BATCH_SIZE: int = 10_000
 
 
 def to_pn(num: int) -> str:
@@ -14,49 +14,47 @@ def to_pn(num: int) -> str:
     return pn
 
 
+def person_generator(fake: Faker):
+    for created in range(1, SEED_DATA_COUNT + 1):
+        city = fake.city()
+        pn = to_pn(fake.random_number(digits=12, fix_len=True))
+        name = fake.name()
+        job = fake.job()
+        country = fake.country()
+        phone_number = fake.phone_number()
+        yield created, Person(
+            name=name,
+            job=job,
+            country=country,
+            phone_number=phone_number,
+            pn=pn,
+            city=city,
+        )
+
+
 class Command(BaseCommand):
     help = "Seeds people into the database."
 
     def _seed_people(self) -> Person:
-        """Seeds people into the database. Returns the first generated person"""
+        """Seeds people into the database."""
 
         call_command("clear_people")
 
         fake = Faker()
-        objects = []
         bulk_creations = 0
         self.stdout.write(self.style.NOTICE("Instanciating objects, please wait..."))
-        for _ in range(SEED_DATA_COUNT):
-            city = fake.city()
-            pn = to_pn(fake.random_number(digits=12, fix_len=True))
-            name = fake.name()
-            job = fake.job()
-            country = fake.country()
-            phone_number = fake.phone_number()
-            person = Person(
-                name=name,
-                job=job,
-                country=country,
-                phone_number=phone_number,
-                pn=pn,
-                city=city,
-            )
+        objects = []
+        for created, person in person_generator(fake):
             objects.append(person)
-
-            if len(objects) >= BATCH_SIZE:
-                Person.objects.bulk_create(objects)
-                objects.clear()
+            if created % BATCH_SIZE == 0:
+                Person.objects.bulk_create(objects, batch_size=BATCH_SIZE)
                 bulk_creations += 1
+                objects.clear()
                 self.stdout.write(
                     self.style.SUCCESS(
-                        f"{bulk_creations}/{SEED_DATA_COUNT//BATCH_SIZE} batches done!"
+                        f"{bulk_creations}/{SEED_DATA_COUNT//BATCH_SIZE} batches created..."
                     )
                 )
-
-        # Handle remaining objects if any are left after the loop
-        if objects:
-            Person.objects.bulk_create(objects)
-            self.stdout.write(self.style.SUCCESS("Final batch done!"))
 
         return Person.objects
 

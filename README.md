@@ -7,4 +7,4 @@ PN = Personnummer
 ## TODO
 - [x] Finish "person-page"
 - [x] Style
-- [ ] Implement seed according to specifications
+- [x] Implement seed according to specifications (done?)
