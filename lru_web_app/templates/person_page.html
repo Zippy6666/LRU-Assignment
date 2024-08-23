@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="{% static 'lru_web_app/css/styles.css' %}">
 </head>
 <body>
-    <ul class="person-info-list">
-        <h1>Person {{person.id}}</h1>
-        <li><strong>Name:</strong> <span>{{person.name}}</span></li>
-        <li><strong>PN:</strong> <span>{{person.pn}}</span></li>
-        <li><strong>City:</strong> <span>{{person.city}}</span></li>
-        <li><strong>Job:</strong> <span>{{person.job}}</span></li>
-        <li><strong>Tele:</strong> <span>{{person.phone_number}}</span></li>
+    <h1>{{person.name}}</h1>
+    <ul class="person-info">
+        <li><strong>ID:</strong> {{person.id}}</li>
+        <li><strong>PN:</strong> {{person.pn}}</li>
+        <li><strong>City:</strong> {{person.city}}</li>
+        <li><strong>Job:</strong> {{person.job}}</li>
+        <li><strong>Tele:</strong> {{person.phone_number}}</li>
     </ul>
 </body>
 </html>
