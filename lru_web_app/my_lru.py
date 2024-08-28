@@ -25,6 +25,7 @@ class LRUCache:
 
     def __call__(self, *args, **_) -> Any:
         cached_return_value, position = self._is_cached(args)
+
         if not cached_return_value is False:
             # Move this value to the first position in the list
             self._cache_list[0], self._cache_list[position] = (
@@ -32,11 +33,8 @@ class LRUCache:
                 self._cache_list[0],
             )
 
-            # print(self._cache_list)
-            print(cached_return_value, "found in cache, returning")
-
-            # Is cached, so return cached value
-            return cached_return_value
+            print(self)
+            return cached_return_value  # Is cached, so return cached value
 
         return_value = self._func(*args)
 
@@ -45,24 +43,8 @@ class LRUCache:
         if len(self._cache_list) > self.max:
             self._cache_list.pop()  # Remove last element if cache is larger than max
 
-        # print(self._cache_list)
-        print(return_value, "not found in cache")
-
+        print(self)
         return return_value
 
-
-if __name__ == "__main__":
-    import time
-
-    @LRUCache
-    def expensive_operation(a, b, **kwargs):
-        time.sleep(2)
-        return a * b
-
-    expensive_operation(3, 3, test="123")
-    expensive_operation(3, 3)
-    expensive_operation(5, 3)
-    expensive_operation(4, 7)
-    expensive_operation(6, 1)
-    expensive_operation(3, 3)
-    expensive_operation(6, 1)
+    def __repr__(self) -> str:
+        return "LRU CACHE: " + str(self._cache_list)
